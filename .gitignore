@@ -1,0 +1,28 @@
+# Virtual environment
+venv_webscraper/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data files
+*.csv
+*.xlsx
+*.pkl
+
+# Chrome binaries
+code/lib/chrome-win64/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+*.tmp
+
+# Environment files
+.env
