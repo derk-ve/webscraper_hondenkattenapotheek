@@ -4,8 +4,6 @@ from webscraper.configs.xpath_configs import category_xpath
 from selenium.webdriver.common.by import By
 import pandas as pd
 import logging
-import re
-
 
 class BaseCatScraper:
 
@@ -62,7 +60,7 @@ class BaseCatScraper:
             self.page_count += 1
 
 
-    def _scrape_category_page_products(self, category_url):
+    def _scrape_category_page_products(self, category_url: str):
 
         page_prod_handler = CategoryPageProductHandler(self)
         products = self._extract_product_elements()

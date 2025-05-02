@@ -21,6 +21,7 @@ class PetmarktProdScraper(BaseProdScraper):
         product_quantity_select_divs = product.find_elements(By.XPATH, ".//" + product_xpath["petmarkt"]["product_quantity_size_div"])
 
         for div in product_quantity_select_divs:
+            
             if pd.isna(size) and "gewich" in div.text.lower():
                 size = self._get_selected_option(div.find_element(By.XPATH, ".//" + product_xpath["petmarkt"]["product_quantity_size_select"])).text
             elif pd.isna(quantity) and "aant" in div.text.lower():
