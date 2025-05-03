@@ -1,4 +1,6 @@
 from selenium import webdriver
+import subprocess
+from selenium.webdriver.chrome.service import Service
 from .prod_page_scrapers.pharmacy4pets_prod_scraper import Pharmacy4petsProdScraper
 from .prod_page_scrapers.medpets_prod_scraper import MedpetsProdScraper
 from .prod_page_scrapers.petmarkt_prod_scraper import PetmarktProdScraper
@@ -12,7 +14,7 @@ import logging
 import pandas as pd
 
 
-logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 class Webscraper:
@@ -23,7 +25,6 @@ class Webscraper:
                  temp_output_path,
                  prev_scraped_path=None):
 
-        self.chrome_options = self._get_chrome_options()
         self.driver = None
 
         self.prev_scraped_df = pd.read_pickle(prev_scraped_path) if prev_scraped_path else None
@@ -45,10 +46,12 @@ class Webscraper:
                        skip_scraped_products=True,
                        skip_scraped_categories=True):
 
-        self.driver = webdriver.Chrome(options=self.chrome_options)
+        self.driver = self._start_driver()
+        logger.info('')
 
         for website, type in website_type_dict.items():
-            print(f"\n\nSCRAPING WEBSITE: {website} WITH SCRAPING TYPE: {type}")
+            logger.info('')
+            logger.info(f"Scraping website: {website} with scraping type: {type}")
 
             if type == "product":
                 self.all_products_info.extend(self._scrape_product_pages(
@@ -65,7 +68,8 @@ class Webscraper:
                 ))
 
             else:
-                print(f"Non existing scrape type for website: {website}")
+                logger.error(f"Non existing scrape type for website: {website}")
+                raise ValueError(f"Unknown scrape type: {type}")
 
         prev_scraped_df = self.prev_scraped_df if skip_scraped_products or skip_scraped_categories else None
 
@@ -112,16 +116,15 @@ class Webscraper:
         all_product_info = []
 
         if not scraper:
-            logging.warning(f"No scraper found for {website}, skipping...")
+            logger.warning(f"No scraper found for {website}, skipping...")
             return
 
         for product_url in product_urls.get(website, []):
             if skip_scraped_products and self._is_scraped_link(product_url):
-                logging.info(f"Skipping already scraped product: {product_url}")
+                logger.info(f"Skipping already scraped product: {product_url}")
                 continue
 
-            logging.info(f"Scraping: {product_url}")
-            print("Returning product scraped result")
+            logger.info(f"Scraping product with link: {product_url}")
             all_product_info.extend(scraper.scrape_product(product_url))
 
         return all_product_info
@@ -139,15 +142,15 @@ class Webscraper:
         scraper = self._get_category_scraper(website, max_pages, skip_scraped_products)
 
         if not scraper:
-            logging.warning(f"No category scraper found for {website}")
+            logger.warning(f"No category scraper found for {website}")
             return
 
         for category_url in category_urls.get(website, []):
             if skip_scraped_categories and self._is_scraped_link(category_url):
-                logging.info(f"Skipping already scraped product: {category_url}")
+                logger.info(f"Skipping already scraped product: {category_url}")
                 continue
 
-            logging.info(f"Scraping category: {category_url}")
+            logger.info(f"Scraping category with link: {category_url}")
             all_category_info.extend(scraper.scrape_category(category_url))
 
         return all_category_info
@@ -165,11 +168,16 @@ class Webscraper:
         return False
 
 
-    def _get_chrome_options(self):
+    def _start_driver(self):
+        logger.info('Starting Chrome driver...')
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--lang=nl-NL')
         chrome_options.add_argument('--start-maximized')
         chrome_options.add_argument('--start-fullscreen')
         chrome_options.add_argument('--start-incognito')
         chrome_options.add_argument('--incognito')
-        return chrome_options
+
+        service = Service()
+        service.log_output = subprocess.DEVNULL  # suppress console output
+        return webdriver.Chrome(service=service,    options=chrome_options)
+        

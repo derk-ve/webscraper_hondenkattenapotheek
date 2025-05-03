@@ -13,6 +13,10 @@ def setup_logger(log_level=logging.INFO, log_dir="logs", log_name="main_pipeline
     logger = logging.getLogger()
     logger.setLevel(log_level)
 
+    # Suppress external noisy loggers
+    logging.getLogger("selenium").setLevel(logging.INFO)
+    logging.getLogger("urllib3").setLevel(logging.WARNING)
+
     if not logger.handlers:
         fh = logging.FileHandler(log_file)
         fh.setLevel(log_level)
@@ -20,7 +24,7 @@ def setup_logger(log_level=logging.INFO, log_dir="logs", log_name="main_pipeline
         ch = logging.StreamHandler()
         ch.setLevel(log_level)
 
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        formatter = logging.Formatter('%(asctime)s | %(name)s | %(levelname)s | %(message)s')
         fh.setFormatter(formatter)
         ch.setFormatter(formatter)
 

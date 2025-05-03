@@ -3,7 +3,9 @@ from ..configs.xpath_configs import product_xpath
 import pandas as pd
 import traceback
 import re
+import logging
 
+logger = logging.getLogger(__name__)
 
 class BaseProdScraper:
 
@@ -18,7 +20,6 @@ class BaseProdScraper:
     def scrape_product(self, product_url):
 
         try:
-            print(f"\nGoing to scrape product: {product_url}...")
             self.driver.get(product_url)
 
             self.waiter.wait(min=2, max=4, webelement_xpath="//" + product_xpath[self.website]["product_element"])
@@ -37,7 +38,7 @@ class BaseProdScraper:
             tb = traceback.extract_tb(e.__traceback__)
             filename, line_number, func_name, text = tb[-1]
 
-            print(f"Error: {e}\nOccurred in file: {filename}\nWithin function: {func_name}\nLine Number: {line_number}\nCode: {text}")
+            logger.error(f"Error: {e}\nOccurred in file: {filename}\nWithin function: {func_name}\nLine Number: {line_number}\nCode: {text}")
 
             info_dict = {
                 "website": self.website,
@@ -48,10 +49,10 @@ class BaseProdScraper:
             product_info = [info_dict]
             raise
 
-        print("Info Retrieved:")
         for i, pi in enumerate(product_info):
-            print(f"Product {i+1}: {pi}")
+            logger.debug(f"\nProduct {i+1}: {pi}")
 
+        logger.info("Finished scraping product information.")
         return product_info
 
 

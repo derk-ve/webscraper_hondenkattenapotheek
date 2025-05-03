@@ -5,6 +5,9 @@ from selenium.webdriver.common.by import By
 import pandas as pd
 import logging
 
+logger = logging.getLogger(__name__)
+
+
 class BaseCatScraper:
 
     def __init__(self, driver, website, final_columns, max_pages=None, prev_scraped_df=None, skip_scraped_products=False):
@@ -27,7 +30,7 @@ class BaseCatScraper:
 
     def scrape_category(self, category_url):
 
-        print(f"\nGoing to scrape category: {category_url}...")
+        logger.info(f"Going to scrape category: {category_url}...")
         self.driver.get(category_url)
 
         print(category_xpath[self.website]["product_element"])
@@ -36,6 +39,8 @@ class BaseCatScraper:
         self.mover.check_and_click_coockie()
 
         self._scrape_category_pages(category_url)
+
+        logger.info('')
         return self.all_product_info
 
 
@@ -46,18 +51,20 @@ class BaseCatScraper:
 
         while True:
 
-            logging.info(f"Scraping page {self.page_count} of {category_url}")
+            logger.info(f"Scraping page {self.page_count} of {category_url}")
             self.waiter.wait(min=2, max=4, webelement_xpath="//" + category_xpath[self.website]["product_element"])
 
             self._scrape_category_page_products(category_url)
 
-            logging.info(f"Scraped page {self.page_count} of {category_url}")
+            logger.info(f"Scraped page {self.page_count} of {category_url}")
 
             if not pagination_handler.next_page_exists():
                 break
 
             self.mover.go_to_next_page()
             self.page_count += 1
+
+            logging.info('')
 
 
     def _scrape_category_page_products(self, category_url: str):
@@ -66,22 +73,23 @@ class BaseCatScraper:
         products = self._extract_product_elements()
 
         if not products:
-            logging.warning(f"No products found on page {self.page_count}")
+            logger.warning(f"No products found on page {self.page_count}")
             return []
 
         try:
 
             for i, product in enumerate(products):
-
+                logging.info(f"Going to scrape product {i+1} on page {self.page_count}")
                 if page_prod_handler._is_already_scraped_product(product, i+1):
                     continue
 
                 product_info = self._scrape_product_info(product, category_url)
                 product_info = page_prod_handler._add_page_metadata(product_info, category_url, i+1)
                 self.all_product_info.append(product_info)
+                self._log_product_info(product_info)
 
         except Exception as e:
-            logging.error(f"Error scraping product {i+1} on page {self.page_count}: {e}")
+            logger.error(f"Error scraping product {i+1} on page {self.page_count}: {e}")
             raise
 
 
@@ -91,6 +99,9 @@ class BaseCatScraper:
 
     def _extract_product_elements(self):
         return self.driver.find_elements(By.XPATH, "//" + category_xpath[self.website]["product_element"])
+    
+    def _log_product_info(self, product_info):
+        logger.info(f"Product info: {product_info}")
 
 
 class CategoryPaginationHandler:
@@ -127,10 +138,9 @@ class CategoryPageProductHandler:
         product_unique_identifier = product.find_element(By.XPATH, ".//" + category_xpath[self.scraper.website]['product_title']).get_attribute("href")
 
         if self.scraper.prev_scraped_df is not None and not self.scraper.prev_scraped_df.empty and self.scraper.skip_scraped_products and product_unique_identifier in self.scraper.prev_scraped_df["title"].values:
-            print(f"Skipping product {product_count} on page {self.scraper.page_count} with unique identifier: {product_unique_identifier}")
+            logging.debug(f"Skipping product {product_count} on page {self.scraper.page_count} with unique identifier: {product_unique_identifier}")
             return True
 
-        print(f"Going to scrape product {product_count} on page {self.scraper.page_count} with unique identifier: {product_unique_identifier}")
         return False
 
 
