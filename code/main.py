@@ -37,15 +37,6 @@ def determine_prev_scraped_path(user_provided_path):
     logging.info(f"Continuing with no previous scraped file provided")
     return None
 
-def get_chrome_options():
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument('--lang=nl-NL')
-    chrome_options.add_argument('--start-maximized')
-    chrome_options.add_argument('--start-fullscreen')
-    chrome_options.add_argument('--start-incognito')
-    chrome_options.add_argument('--incognito')
-    return chrome_options
-
 def get_website_scrape_types():
     return {
         'dierapotheker': 'product',
@@ -56,11 +47,9 @@ def get_website_scrape_types():
     }
 
 def run_full_scrape(prev_scraped_path):
-    logging.info("Starting scraper setup...")
-    chrome_options = get_chrome_options()
+    logging.info("Setting chrome options...")
 
     scraper = Webscraper(
-        chrome_options=chrome_options,
         final_columns=final_columns,
         final_output_path=RESULT_PATH,
         temp_output_path=TEMP_PATH,
@@ -79,23 +68,31 @@ def run_full_scrape(prev_scraped_path):
         )
         logging.info(f"Scraping completed. Rows scraped: {len(result_df)}")
     except Exception:
-        logging.exception("Scraper failed with an exception.")
+        logging.error("Scraper failed with an exception.")
         raise
 
 def main():
     args = parse_arguments()
-    setup_logger(args.log_level)
+
+    log_level = getattr(logging, args.log_level.upper(), logging.INFO)
+    setup_logger(log_level=log_level)
+
     logging.info("Main process started.")
+    logging.info(f"Log level set to: {args.log_level.upper()}")
 
     ensure_directories()
     prev_scraped_path = determine_prev_scraped_path(args.prev_scraped_path)
     
+    logging.info('')
+    logging.info("Starting webscraper...")   
     try:
         run_full_scrape(prev_scraped_path)
-        logging.info("Main process completed successfully.")
+        logging.info("Succesfully scraped and stored scraped data.")
     except Exception:
-        logging.exception("Main process failed.")
-        print("An error occurred during scraping. Check the log file for details.")
+        logging.exception("Failed to scrape and store scraped data.")
+        logging.info("An error occurred during scraping. Check the log file for details.")
+
+    logging.info("Main process completed.")
 
 if __name__ == "__main__":
     main()

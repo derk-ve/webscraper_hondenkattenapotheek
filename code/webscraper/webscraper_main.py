@@ -18,13 +18,12 @@ logging.basicConfig(level=logging.INFO)
 class Webscraper:
 
     def __init__(self,
-                 chrome_options,
                  final_columns,
                  final_output_path,
                  temp_output_path,
                  prev_scraped_path=None):
 
-        self.chrome_options = chrome_options
+        self.chrome_options = self._get_chrome_options()
         self.driver = None
 
         self.prev_scraped_df = pd.read_pickle(prev_scraped_path) if prev_scraped_path else None
@@ -164,3 +163,13 @@ class Webscraper:
             logging.warning("Previously scraped df not found, could not check if product is in previously scraped products")
 
         return False
+
+
+    def _get_chrome_options(self):
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument('--lang=nl-NL')
+        chrome_options.add_argument('--start-maximized')
+        chrome_options.add_argument('--start-fullscreen')
+        chrome_options.add_argument('--start-incognito')
+        chrome_options.add_argument('--incognito')
+        return chrome_options
