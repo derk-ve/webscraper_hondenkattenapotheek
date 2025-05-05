@@ -1,8 +1,12 @@
 import logging
 from scraping.webscraper_main import Webscraper
 
+logger = logging.getLogger(__name__)
+
 def run_scraping(final_dir, temp_dir, prev_scraped_path):
-    logging.info("Starting webscraper...")
+    logger.debug(f'Final directory: {final_dir}')
+    logger.debug(f'Temp directory: {temp_dir}')
+    logger.debug(f'Previous scraped path: {prev_scraped_path}')
 
     final_columns = [
     'title', 'pet', 'brand', 'size', 'quantity', 'price', 'sale_price', 'delivery_info', 'available',

@@ -5,6 +5,9 @@ from .cleaners.medpets_cleaner import MedpetsCleaner
 from .cleaners.pharmacy4pets_cleaner import Pharmacy4petsCleaner
 from .cleaners.hondenkattenapotheek_cleaner import HondenkattenapotheekCleaner
 import pandas as pd
+import logging
+
+logger = logging.getLogger(__name__)
 
 class DataCleaner:
     def __init__(self, df, websites):
@@ -40,16 +43,16 @@ class DataCleaner:
         elif website == 'hondenkattenapotheek':
             return HondenkattenapotheekCleaner
         else:
-            print(f'No cleaner found for website: {website}')
+            logger.debug(f'No cleaner found for website: {website}')
 
     def apply_website_specific_cleaning(self):
         cleaned_subsets = []
         for website in self.websites:
-            print(f'\nDoing website specific cleaning for: {website}')
+            logger.debug(f'\nDoing website specific cleaning for: {website}')
             df_cleaned_subset = self.df_cleaned[self.df_cleaned['website'] == website].copy()
             cleaner = self._get_website_cleaner(website)
             if df_cleaned_subset.empty or not cleaner:
-                print(f'Skipping {website} cleaning')
+                logger.debug(f'Skipping {website} cleaning')
                 continue
 
             df_cleaned_subset = (

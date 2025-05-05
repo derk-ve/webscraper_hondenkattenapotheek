@@ -50,9 +50,8 @@ class BaseProdScraper:
             raise
 
         for i, pi in enumerate(product_info):
-            logger.debug(f"\nProduct {i+1}: {pi}")
-
-        logger.info("Finished scraping product information.")
+            logger.info(f"Product {i+1}: Price scraped: {pi.get('price', 'N/A')}")
+            logger.info(f"Product {i+1}: Sale Price scraped: {pi.get('sale_price', 'N/A')}")
         return product_info
 
 

@@ -1,7 +1,9 @@
 import pandas as pd
 from datetime import datetime
 import requests
+import logging
 
+logger = logging.getLogger(__name__)
 
 class Saver:
 
@@ -13,6 +15,9 @@ class Saver:
         self.final_output_path = final_output_path
         self.temp_output_path = temp_output_path
         self.final_columns = final_columns
+
+        logger.info(f"Final output path: {self.final_output_path}")
+        logger.info(f"Temporary output path: {self.temp_output_path}")
 
 
     def save_temp_file(self,

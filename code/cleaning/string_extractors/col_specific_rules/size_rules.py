@@ -192,7 +192,7 @@ class SerestoSizeExtractRule(StringExtractRule):
         if re.search(r"(0|licht|<).*?8", s) or "klein" in s:
             return "S (< 8 kg)"
 
-        elif re.search(r"8.*?meer", s) or re.search(r"(zwaar|>).*?8", s) or "groot" in s or "grote" in s:
+        elif re.search(r"8.*?meer", s) or re.search(r"(zwaar|>).*?8", s) or re.search(r'70\s*cm', s) or "groot" in s or "grote" in s:
             return "L (> 8 kg)"
 
         print(f"Could not extract seresto size from: {s}")
