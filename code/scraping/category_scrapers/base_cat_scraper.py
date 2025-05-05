@@ -1,6 +1,6 @@
-from webscraper.utils.mover import Mover
-from webscraper.utils.waiter import Waiter
-from webscraper.configs.xpath_configs import category_xpath
+from scraping.utils.mover import Mover
+from scraping.utils.waiter import Waiter
+from scraping.configs.xpath_configs import category_xpath
 from selenium.webdriver.common.by import By
 import pandas as pd
 import logging

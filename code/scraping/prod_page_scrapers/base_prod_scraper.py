@@ -1,4 +1,4 @@
-from webscraper.utils.waiter import Waiter
+from scraping.utils.waiter import Waiter
 from ..configs.xpath_configs import product_xpath
 import pandas as pd
 import traceback
