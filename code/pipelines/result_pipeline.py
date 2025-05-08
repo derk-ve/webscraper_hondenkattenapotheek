@@ -1,7 +1,7 @@
 import os
 import logging
 import pandas as pd
-from transforming.price_pivot_builder import PricePivotBuilder
+from ..transforming.price_pivot_builder import PricePivotBuilder
 
 
 def save_result_to_excel(result, result_file):

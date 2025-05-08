@@ -1,6 +1,6 @@
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from scraping.configs.xpath_configs import category_xpath
+from ...scraping.configs.xpath_configs import category_xpath
 from .waiter import Waiter
 import time
 

@@ -1,5 +1,5 @@
 import logging
-from scraping.webscraper_main import Webscraper
+from ..scraping.webscraper_main import Webscraper
 
 logger = logging.getLogger(__name__)
 

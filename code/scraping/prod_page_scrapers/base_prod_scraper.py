@@ -1,8 +1,7 @@
-from scraping.utils.waiter import Waiter
+from ..utils.waiter import Waiter
 from ..configs.xpath_configs import product_xpath
 import pandas as pd
 import traceback
-import re
 import logging
 
 logger = logging.getLogger(__name__)

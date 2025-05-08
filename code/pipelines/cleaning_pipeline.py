@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 import logging
-from cleaning.cleaner_main import DataCleaner
+from ..cleaning.cleaner_main import DataCleaner
 
 def run_cleaning(scraped_result_dir, cleaned_dir, date_str):
     logging.info("Cleaning data...")

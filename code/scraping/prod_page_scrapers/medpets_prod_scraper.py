@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 from .base_prod_scraper import BaseProdScraper
-from scraping.configs.xpath_configs import product_xpath
+from ...scraping.configs.xpath_configs import product_xpath
 import pandas as pd
 import json
 import re

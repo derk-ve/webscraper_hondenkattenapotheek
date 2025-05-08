@@ -1,6 +1,6 @@
 import logging
 import os
-from comparing.price_comparer import PriceComparer
+from ..comparing.price_comparer import PriceComparer
 
 def save_comparison_to_excel(diff, new_rows, removed_rows, comparison_dir, comparison_dates):
     """

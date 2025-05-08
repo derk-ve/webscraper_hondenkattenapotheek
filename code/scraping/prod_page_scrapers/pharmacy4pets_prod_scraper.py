@@ -1,5 +1,5 @@
 from .base_prod_scraper import BaseProdScraper
-from scraping.configs.xpath_configs import product_xpath
+from ..configs.xpath_configs import product_xpath
 import time
 import re
 from selenium.webdriver.common.by import By
