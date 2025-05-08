@@ -168,16 +168,34 @@ class Webscraper:
         return False
 
 
+    # def _start_driver(self):
+    #     logger.info('Starting Chrome driver...')
+    #     chrome_options = webdriver.ChromeOptions()
+    #     chrome_options.add_argument('--lang=nl-NL')
+    #     chrome_options.add_argument('--start-maximized')
+    #     chrome_options.add_argument('--start-fullscreen')
+    #     chrome_options.add_argument('--start-incognito')
+    #     chrome_options.add_argument('--incognito')
+
+    #     service = Service()
+    #     service.log_output = subprocess.DEVNULL  # suppress console output
+    #     return webdriver.Chrome(service=service,    options=chrome_options)
+
     def _start_driver(self):
         logger.info('Starting Chrome driver...')
         chrome_options = webdriver.ChromeOptions()
+
+        # Add only minimal, safe options for CI
         chrome_options.add_argument('--lang=nl-NL')
-        chrome_options.add_argument('--start-maximized')
-        chrome_options.add_argument('--start-fullscreen')
-        chrome_options.add_argument('--start-incognito')
+        chrome_options.add_argument('--headless=new')  # use headless mode for CI (stable)
+        chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument('--disable-dev-shm-usage')
+        chrome_options.add_argument('--window-size=1920,1080')
         chrome_options.add_argument('--incognito')
 
         service = Service()
-        service.log_output = subprocess.DEVNULL  # suppress console output
-        return webdriver.Chrome(service=service,    options=chrome_options)
+        service.log_output = subprocess.DEVNULL
+        return webdriver.Chrome(service=service, options=chrome_options)
+
         
