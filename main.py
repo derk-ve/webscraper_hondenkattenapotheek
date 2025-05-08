@@ -4,10 +4,10 @@ import logging
 import argparse
 from utils.logger import setup_logger
 
-from pipelines.scraping_pipeline import run_scraping
-from pipelines.cleaning_pipeline import run_cleaning
-from pipelines.result_pipeline import build_result_file
-from pipelines.comparison_pipeline import compare_results
+from code.pipelines.scraping_pipeline import run_scraping
+from code.pipelines.cleaning_pipeline import run_cleaning
+from code.pipelines.result_pipeline import build_result_file
+from code.pipelines.comparison_pipeline import compare_results
 
 # Paths
 DATA_DIR = "C:/Users/derkv/OneDrive/Documenten/Brightminds/Webscraper/data"
