@@ -2,8 +2,7 @@ import os
 import datetime
 import logging
 import argparse
-from utils.logger import setup_logger
-
+from code.utils.logger import setup_logger
 from code.pipelines.scraping_pipeline import run_scraping
 from code.pipelines.cleaning_pipeline import run_cleaning
 from code.pipelines.result_pipeline import build_result_file
