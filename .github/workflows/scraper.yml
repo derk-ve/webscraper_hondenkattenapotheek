@@ -1,9 +1,10 @@
 name: Run Web Scraper Every 2 Days
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: '0 2 */2 * *'  # Every 2 days at 2 AM UTC
-  workflow_dispatch:
+
 
 jobs:
   run-scraper:
