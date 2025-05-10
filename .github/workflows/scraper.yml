@@ -18,6 +18,7 @@ jobs:
         with:
           name: scraper-output
           path: data/
+          if-no-artifact-found: ignore
 
 
       - name: Set up Python
