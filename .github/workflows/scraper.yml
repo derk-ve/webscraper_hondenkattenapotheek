@@ -13,6 +13,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Download previous result data (if available)
+        uses: actions/download-artifact@v4
+        with:
+          name: scraper-output
+          path: data/
+
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -31,4 +38,11 @@ jobs:
           pip install -r requirements-ci.txt
 
       - name: Run scraper
-        run: python main.py
+        run: python main.py --compare-to 10_05_2025
+
+      - name: Upload output data
+        uses: actions/upload-artifact@v4
+        with:
+          name: scraper-output
+          path: data/
+

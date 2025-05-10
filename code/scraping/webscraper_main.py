@@ -44,9 +44,16 @@ class Webscraper:
                        website_type_dict: dict,
                        max_pages=10,
                        skip_scraped_products=True,
-                       skip_scraped_categories=True):
+                       skip_scraped_categories=True,
+                       IS_CI = None):
 
-        self.driver = self._start_driver()
+        if IS_CI:
+            logger.info('Running in CI environment, starting driver in headless mode...')
+            self.driver = self._start_driver_ci()
+        else:
+            logger.info('Running in local environment, starting driver in normal mode...')
+            self.driver = self._start_driver()
+
         logger.info('')
 
         for website, type in website_type_dict.items():
@@ -168,20 +175,20 @@ class Webscraper:
         return False
 
 
-    # def _start_driver(self):
-    #     logger.info('Starting Chrome driver...')
-    #     chrome_options = webdriver.ChromeOptions()
-    #     chrome_options.add_argument('--lang=nl-NL')
-    #     chrome_options.add_argument('--start-maximized')
-    #     chrome_options.add_argument('--start-fullscreen')
-    #     chrome_options.add_argument('--start-incognito')
-    #     chrome_options.add_argument('--incognito')
-
-    #     service = Service()
-    #     service.log_output = subprocess.DEVNULL  # suppress console output
-    #     return webdriver.Chrome(service=service,    options=chrome_options)
-
     def _start_driver(self):
+        logger.info('Starting Chrome driver...')
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument('--lang=nl-NL')
+        chrome_options.add_argument('--start-maximized')
+        chrome_options.add_argument('--start-fullscreen')
+        chrome_options.add_argument('--start-incognito')
+        chrome_options.add_argument('--incognito')
+
+        service = Service()
+        service.log_output = subprocess.DEVNULL  # suppress console output
+        return webdriver.Chrome(service=service,    options=chrome_options)
+
+    def _start_driver_ci(self):
         logger.info('Starting Chrome driver...')
         chrome_options = webdriver.ChromeOptions()
 

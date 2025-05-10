@@ -8,21 +8,27 @@ from code.pipelines.cleaning_pipeline import run_cleaning
 from code.pipelines.result_pipeline import build_result_file
 from code.pipelines.comparison_pipeline import compare_results
 
-# Paths
-DATA_DIR = "C:/Users/derkv/OneDrive/Documenten/Brightminds/Webscraper/data"
+IS_CI = os.getenv("GITHUB_ACTIONS") == "true"
 
-SCRAPED_DIR = os.path.join(DATA_DIR, "scraped_data")
-TEMP_SCRAPED_DIR = os.path.join(SCRAPED_DIR, "temp_results")
-FINAL_SCRAPED_DIR = os.path.join(SCRAPED_DIR, "scraped_results")
+def set_directories():
+    if IS_CI:
+        DATA_DIR = os.path.join(os.getcwd(), "data")  # Relative path in CI
+    else:
+        DATA_DIR = "C:/Users/derkv/OneDrive/Documenten/Brightminds/Webscraper/data"
 
-CLEANED_DIR = os.path.join(DATA_DIR, "cleaned_data")
+    SCRAPED_DIR = os.path.join(DATA_DIR, "scraped_data")
+    TEMP_SCRAPED_DIR = os.path.join(SCRAPED_DIR, "temp_results")
+    FINAL_SCRAPED_DIR = os.path.join(SCRAPED_DIR, "scraped_results")
 
-RESULT_DIR = os.path.join(DATA_DIR, "result_data")
+    CLEANED_DIR = os.path.join(DATA_DIR, "cleaned_data")
 
-COMPARISON_DIR = os.path.join(DATA_DIR, "comparison_data")
+    RESULT_DIR = os.path.join(DATA_DIR, "result_data")
 
-LOG_DIR = os.path.join(os.path.dirname(__file__), "logs")
-LOG_FILE = os.path.join(LOG_DIR, "scraper_log.txt")
+    COMPARISON_DIR = os.path.join(DATA_DIR, "comparison_data")
+
+    LOG_DIR = os.path.join(os.path.dirname(__file__), "logs")
+    LOG_FILE = os.path.join(LOG_DIR, "scraper_log.txt")
+
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Run webscraper and/or cleaner.")
