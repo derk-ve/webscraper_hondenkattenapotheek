@@ -2,6 +2,7 @@ import pandas as pd
 from datetime import datetime
 import requests
 import logging
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -12,13 +13,9 @@ class Saver:
                  temp_output_path,
                  final_columns):
 
-        logging.info(f"Setting final output path in saver to : {final_output_path}")
         self.final_output_path = final_output_path
         self.temp_output_path = temp_output_path
         self.final_columns = final_columns
-
-        logger.info(f"Final output path: {self.final_output_path}")
-        logger.info(f"Temporary output path: {self.temp_output_path}")
 
 
     def save_temp_file(self,
@@ -70,15 +67,16 @@ class Saver:
             df = pd.concat([existing_products_df, df])
 
         df = df.drop_duplicates(subset=["title", "product_link", "size", "quantity", "pet"], keep="first").reset_index(drop=True)
-        output_path = self.add_date_to_file_path(self.final_output_path + "_full_result")
+        output_path = self.add_date_to_file_path(os.path.join(self.final_output_path, "full_result"))
 
+        logger.info(f"Saving full result file to {output_path}")
         try:
             df.to_excel(output_path + ".xlsx", index=False)
             df.to_csv(output_path + ".csv", index=False, encoding="utf-8")
             df.to_pickle(output_path + ".pkl")
-            print(f"Full results saved to {output_path}")
+            logger.info(f"Full results saved to {output_path}")
         except Exception as e:
-            print("Failed to save result ", e)
+            logger.error(f"Failed to save result: {e}")
 
         return df
 

@@ -155,6 +155,16 @@ def main():
     logging.info("Main process started.")
     logging.info(f"Log level set to: {args.log_level.upper()}")
 
+    logging.info(f"Scraped data directory: {SCRAPED_DIR}")
+    logging.info(f"Main scraped data directory: {SCRAPED_DIR}")
+    logging.info(f"Temporary scraped data directory: {TEMP_SCRAPED_DIR}")
+    logging.info(f"Final scraped data directory: {FINAL_SCRAPED_DIR}")
+    logging.info(f"Cleaned data directory: {CLEANED_DIR}")
+    logging.info(f"Result data directory: {RESULT_DIR}")
+    logging.info(f"Comparison data directory: {COMPARISON_DIR}")
+    logging.info(f"Log directory: {LOG_DIR}")
+
+
     ensure_directories()
 
     today_str = datetime.date.today().strftime('%d_%m_%Y')

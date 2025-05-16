@@ -5,8 +5,9 @@ from ..cleaning.cleaner_main import DataCleaner
 
 def run_cleaning(scraped_result_dir, cleaned_dir, date_str):
     logging.info("Cleaning data...")
+    logging.info(f"Scraped result directory: {scraped_result_dir}")
     try:
-        df = pd.read_pickle(os.path.join(scraped_result_dir, f"scraped_results_full_result_{date_str}.pkl"))
+        df = pd.read_pickle(os.path.join(scraped_result_dir, f"full_result_{date_str}.pkl"))
         websites = ['dierapotheker', 'petmarkt', 'medpets', 'pharmacy4pets', 'hondenkattenapotheek']
 
         cleaned_df = (
