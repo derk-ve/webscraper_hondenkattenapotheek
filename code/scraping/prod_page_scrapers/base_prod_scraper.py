@@ -50,7 +50,7 @@ class BaseProdScraper:
 
         for i, pi in enumerate(product_info):
             logger.info(f"Product {i+1}: Price scraped: {pi.get('price', 'N/A')}")
-            logger.info(f"Product {i+1}: Sale Price scraped: {pi.get('sale_price', 'N/A')}")
+            # logger.info(f"Product {i+1}: Sale Price scraped: {pi.get('sale_price', 'N/A')}")
         return product_info
 
 

@@ -3,7 +3,7 @@ from ..scraping.webscraper_main import Webscraper
 
 logger = logging.getLogger(__name__)
 
-def run_scraping(final_dir, temp_dir, prev_scraped_path, IS_CI = None):
+def run_scraping(final_dir, temp_dir, prev_scraped_path, IS_CI = False):
     logger.debug(f'Final directory: {final_dir}')
     logger.debug(f'Temp directory: {temp_dir}')
     logger.debug(f'Previous scraped path: {prev_scraped_path}')
@@ -22,6 +22,7 @@ def run_scraping(final_dir, temp_dir, prev_scraped_path, IS_CI = None):
     )
 
     try:
+
         result_df = scraper.run_webscraper(
             website_type_dict=get_website_scrape_types(),
             max_pages=10,
@@ -29,9 +30,10 @@ def run_scraping(final_dir, temp_dir, prev_scraped_path, IS_CI = None):
             skip_scraped_categories=False,
             IS_CI=IS_CI
         )
+
         logging.info(f"Scraping completed. Rows scraped: {len(result_df)}")
     except Exception:
-        logging.exception("Scraper failed.")
+        logging.error("Scraper failed.")
         raise
 
 def get_website_scrape_types():

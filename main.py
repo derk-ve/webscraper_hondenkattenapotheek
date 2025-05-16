@@ -79,6 +79,8 @@ def run_webscraper_pipeline(args, run_date_str):
             IS_CI=IS_CI,
         )
 
+        logging.info("Webscraper completed successfully.")
+
     except Exception:
 
         logging.error("Failed to scrape and store scraped data.")
@@ -95,6 +97,8 @@ def run_cleaning_pipeline(run_date_str):
         logging.info('Cleaning scraped data...')
 
         run_cleaning(FINAL_SCRAPED_DIR, CLEANED_DIR, run_date_str)
+
+        logging.info("Cleaning completed successfully.")
 
     except Exception:
 
@@ -119,30 +123,28 @@ def run_result_pipeline(run_date_str):
         raise
 
 def run_comparison_pipeline(args, run_date_str):
-    if args.compare_to:
+    old_date = args.compare_to
 
-        try:
+    try:
 
-            logging.info('')
-            logging.info("Starting result comparison...")
-            logging.info(f"Comparing result file from {run_date_str} to {args.compare_to}...")
+        logging.info('')
+        logging.info("Starting result comparison...")
 
-            compare_results(
-                result_dir=RESULT_DIR,
-                comparison_dir=COMPARISON_DIR,
-                new_date=run_date_str,
-                old_date=args.compare_to,
-            )
+        compare_results(
+            result_dir=RESULT_DIR,
+            comparison_dir=COMPARISON_DIR,
+            new_date=run_date_str,
+            old_date=old_date,
+        )
 
-        except Exception:
-            
-            logging.info('')
-            logging.error("Comparison step failed.")
+        logging.info("Comparison completed successfully.")
 
-            raise
-    else:
+    except Exception:
+        
+        logging.info('')
+        logging.error("Comparison step failed.")
 
-        logging.info("No comparison date provided. Skipping comparison step.")
+        raise
 
 def main():
 
