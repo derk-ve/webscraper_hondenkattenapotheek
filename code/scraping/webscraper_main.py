@@ -12,6 +12,7 @@ from .configs.category_urls import category_urls
 from .utils.saver import Saver
 import logging
 import pandas as pd
+import tempfile
 
 
 logger = logging.getLogger(__name__)
@@ -200,6 +201,9 @@ class Webscraper:
         chrome_options.add_argument('--disable-dev-shm-usage')
         chrome_options.add_argument('--window-size=1920,1080')
         chrome_options.add_argument('--incognito')
+
+        tmp_profile = tempfile.mkdtemp()
+        chrome_options.add_argument(f'--user-data-dir={tmp_profile}')
 
         service = Service()
         service.log_output = subprocess.DEVNULL
