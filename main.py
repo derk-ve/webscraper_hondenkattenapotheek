@@ -10,24 +10,23 @@ from code.pipelines.comparison_pipeline import compare_results
 
 IS_CI = os.getenv("GITHUB_ACTIONS") == "true"
 
-def set_directories():
-    if IS_CI:
-        DATA_DIR = os.path.join(os.getcwd(), "data")  # Relative path in CI
-    else:
-        DATA_DIR = "C:/Users/derkv/OneDrive/Documenten/Brightminds/Webscraper/data"
+if IS_CI:
+    DATA_DIR = os.path.join(os.getcwd(), "data")  # Relative path in CI
+else:
+    DATA_DIR = "C:/Users/derkv/OneDrive/Documenten/Brightminds/Webscraper/data"
 
-    SCRAPED_DIR = os.path.join(DATA_DIR, "scraped_data")
-    TEMP_SCRAPED_DIR = os.path.join(SCRAPED_DIR, "temp_results")
-    FINAL_SCRAPED_DIR = os.path.join(SCRAPED_DIR, "scraped_results")
+SCRAPED_DIR = os.path.join(DATA_DIR, "scraped_data")
+TEMP_SCRAPED_DIR = os.path.join(SCRAPED_DIR, "temp_results")
+FINAL_SCRAPED_DIR = os.path.join(SCRAPED_DIR, "scraped_results")
 
-    CLEANED_DIR = os.path.join(DATA_DIR, "cleaned_data")
+CLEANED_DIR = os.path.join(DATA_DIR, "cleaned_data")
 
-    RESULT_DIR = os.path.join(DATA_DIR, "result_data")
+RESULT_DIR = os.path.join(DATA_DIR, "result_data")
 
-    COMPARISON_DIR = os.path.join(DATA_DIR, "comparison_data")
+COMPARISON_DIR = os.path.join(DATA_DIR, "comparison_data")
 
-    LOG_DIR = os.path.join(os.path.dirname(__file__), "logs")
-    LOG_FILE = os.path.join(LOG_DIR, "scraper_log.txt")
+LOG_DIR = os.path.join(os.path.dirname(__file__), "logs")
+LOG_FILE = os.path.join(LOG_DIR, "scraper_log.txt")
 
 
 def parse_arguments():
