@@ -12,6 +12,7 @@ class Saver:
                  temp_output_path,
                  final_columns):
 
+        logging.info("Setting final output path in saver to : {final_output_path}")
         self.final_output_path = final_output_path
         self.temp_output_path = temp_output_path
         self.final_columns = final_columns
