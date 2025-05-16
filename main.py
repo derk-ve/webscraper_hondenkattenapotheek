@@ -76,6 +76,7 @@ def run_webscraper_pipeline(args, run_date_str):
             final_dir=FINAL_SCRAPED_DIR,
             temp_dir=TEMP_SCRAPED_DIR,
             prev_scraped_path=prev_scraped_path,
+            IS_CI=IS_CI,
         )
 
     except Exception:
