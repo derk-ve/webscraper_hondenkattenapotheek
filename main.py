@@ -9,6 +9,7 @@ from code.pipelines.scraping_pipeline import run_scraping
 from code.pipelines.cleaning_pipeline import run_cleaning
 from code.pipelines.result_pipeline import build_result_file
 from code.pipelines.comparison_pipeline import compare_results
+from code.pipelines.changes_summary_pipeline import create_summary
 
 IS_CI = os.getenv("GITHUB_ACTIONS") == "true"
 
@@ -188,7 +189,6 @@ def run_changes_summary_pipeline(run_date, compare_date):
         logging.info("Starting changes summary...")
 
         create_summary(
-            result_dir=RESULT_DIR,
             comparison_dir=COMPARISON_DIR,
             new_date=run_date,
             old_date=compare_date,
