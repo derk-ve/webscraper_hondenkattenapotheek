@@ -87,7 +87,6 @@ def run_webscraper_pipeline(args, run_date_str):
 
         raise
 
-    return os.path.join(FINAL_SCRAPED_DIR, f"scraped_results_full_result_{run_date_str}.pkl")
 
 
 def run_cleaning_pipeline(run_date_str):
