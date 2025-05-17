@@ -10,20 +10,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Checkout code
         uses: actions/checkout@v3
+
         
-      - name: Download previous result data (if available)
-        uses: actions/download-artifact@v4
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
         with:
-          name: scraper-output
-          path: data/
-        continue-on-error: true
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
+
 
       - name: Install Google Chrome
         run: |
@@ -32,17 +36,42 @@ jobs:
           wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
           sudo apt install -y ./google-chrome-stable_current_amd64.deb
 
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements-ci.txt
 
+
+      - name: Download latest result_{date}.xlsx from S3
+        run: |
+          mkdir -p data/result_data
+          latest_file=$(aws s3 ls s3://${{ secrets.S3_BUCKET_NAME }}/ | grep 'result_.*\.xlsx' | sort | tail -n 1 | awk '{print $4}')
+          echo "Latest result file found: $latest_file"
+          
+          if [ -n "$latest_file" ]; then
+            aws s3 cp s3://${{ secrets.S3_BUCKET_NAME }}/"$latest_file" data/result_data/"$latest_file"
+
+          else
+            echo "No previous result file found in S3."
+          fi
+
+
       - name: Run scraper
         run: python main.py 
 
-      - name: Upload output data
+
+      - name: Upload new result file to S3
+        run: |
+          today=$(date +'%d_%m_%Y')
+          latest_file="data/result_data/result_${today}.xlsx"
+          echo "Uploading $latest_file to S3..."
+          aws s3 cp "$latest_file" s3://${{ secrets.S3_BUCKET_NAME }}/$(basename "$latest_file")
+
+
+      - name: Upload all output files to GitHub Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: scraper-output
+          name: scraper-output-${{ github.run_id }}
           path: data/
 

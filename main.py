@@ -79,12 +79,17 @@ def get_latest_result_file_date() -> str:
             dates.append(match.group(1))
 
     if not dates:
-
-        return None
+        raise ValueError("No valid result files found with date pattern in result_data folder.")
 
     # Sort dates as datetime objects
     dates_sorted = sorted(dates, key=lambda d: datetime.datetime.strptime(d, "%d_%m_%Y"))
-    return dates_sorted[-2]  # Most recent
+
+    latest_index = -1 if IS_CI else -2
+
+    if abs(latest_index) > len(dates_sorted):
+        raise ValueError(f"Cannot select result file at index {latest_index}: only {len(dates_sorted)} files available.")
+
+    return dates_sorted[latest_index]  # Most recent
 
 
 def run_webscraper_pipeline(args):
@@ -158,8 +163,7 @@ def run_result_pipeline(run_date:str):
 
         raise
 
-def run_comparison_pipeline(args, run_date:str, compare_date:str):
-    old_date = args.compare_to
+def run_comparison_pipeline(run_date:str, compare_date:str):
 
     try:
 
@@ -232,6 +236,7 @@ def main():
     run_date = args.clean_date or today_str
     compare_date = args.compare_to or get_latest_result_file_date()
 
+
     logging.info(f"Run date: {run_date}")
     logging.info(f"Compare date: {compare_date}")
 
@@ -243,7 +248,7 @@ def main():
 
         run_result_pipeline(run_date)
 
-        run_comparison_pipeline(args, run_date, compare_date)
+        run_comparison_pipeline(run_date, compare_date)
 
     except Exception:
 
