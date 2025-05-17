@@ -234,7 +234,7 @@ def main():
 
     try:
 
-        run_webscraper_pipeline(args, run_date)
+        run_webscraper_pipeline(args)
 
         run_cleaning_pipeline(run_date)
 
