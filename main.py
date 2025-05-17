@@ -230,7 +230,10 @@ def main():
     logging.info(f"Today's date: {today_str}")
 
     run_date = args.clean_date or today_str
-    compare_date = args.compare_to or get_latest_result_file_date
+    compare_date = args.compare_to or get_latest_result_file_date()
+
+    logging.info(f"Run date: {run_date}")
+    logging.info(f"Compare date: {compare_date}")
 
     try:
 
