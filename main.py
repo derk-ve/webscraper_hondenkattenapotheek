@@ -43,12 +43,30 @@ def parse_arguments():
 
 def ensure_directories():
     os.makedirs(DATA_DIR, exist_ok=True)
+    logging.info('')
+    logging.info(f"Main scraped data directory: {SCRAPED_DIR}")
     os.makedirs(SCRAPED_DIR, exist_ok=True)
+    logging.info('')
+    logging.info(f"Temporary scraped data directory: {TEMP_SCRAPED_DIR}")
     os.makedirs(TEMP_SCRAPED_DIR, exist_ok=True)
+    logging.info('')
+    logging.info(f"Temporary scraped data directory: {TEMP_SCRAPED_DIR}")
     os.makedirs(FINAL_SCRAPED_DIR, exist_ok=True)
+    logging.info('')
+    logging.info(f"Final scraped data directory: {FINAL_SCRAPED_DIR}")
     os.makedirs(CLEANED_DIR, exist_ok=True)
+    logging.info('')
+    logging.info(f"Cleaned data directory: {CLEANED_DIR}")
     os.makedirs(RESULT_DIR, exist_ok=True)
+    logging.info('')
+    logging.info(f"Result data directory: {RESULT_DIR}")
     os.makedirs(COMPARISON_DIR, exist_ok=True)
+    logging.info('')
+    logging.info(f"Comparison data directory: {COMPARISON_DIR}")
+    os.makedirs(LOG_DIR, exist_ok=True)
+    logging.info('')
+    logging.info(f"Log directory: {LOG_DIR}")
+
 
 def determine_prev_scraped_path(user_provided_path):
 
@@ -64,6 +82,8 @@ def determine_prev_scraped_path(user_provided_path):
 
 
 def get_latest_result_file_date() -> str:
+    logging.info('')
+    logging.info(f"Getting previous result file date from: {path}")
 
     result_files = glob.glob(os.path.join(RESULT_DIR, "result_*.xlsx"))
     date_pattern = re.compile(r"result_(\d{2}_\d{2}_\d{4})\.xlsx")
@@ -72,7 +92,6 @@ def get_latest_result_file_date() -> str:
 
     for path in result_files:
 
-        logging.info(f"Checking file: {path}")
         match = date_pattern.search(os.path.basename(path))
 
         if match:
@@ -215,28 +234,20 @@ def main():
     setup_logger(log_level=log_level)
 
     logging.info("Main process started.")
+    logging.info('')
     logging.info(f"Log level set to: {args.log_level.upper()}")
-
-    logging.info(f"Scraped data directory: {SCRAPED_DIR}")
-    logging.info(f"Main scraped data directory: {SCRAPED_DIR}")
-    logging.info(f"Temporary scraped data directory: {TEMP_SCRAPED_DIR}")
-    logging.info(f"Final scraped data directory: {FINAL_SCRAPED_DIR}")
-    logging.info(f"Cleaned data directory: {CLEANED_DIR}")
-    logging.info(f"Result data directory: {RESULT_DIR}")
-    logging.info(f"Comparison data directory: {COMPARISON_DIR}")
-    logging.info(f"Log directory: {LOG_DIR}")
-
 
     ensure_directories()
 
     today_str = datetime.date.today().strftime('%d_%m_%Y')
 
+    logging.info('')
     logging.info(f"Today's date: {today_str}")
 
     run_date = args.clean_date or today_str
     compare_date = args.compare_to or get_latest_result_file_date()
 
-
+    logging.info('')
     logging.info(f"Run date: {run_date}")
     logging.info(f"Compare date: {compare_date}")
 
