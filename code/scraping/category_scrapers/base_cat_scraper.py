@@ -33,7 +33,6 @@ class BaseCatScraper:
         logger.info(f"Going to scrape category: {category_url}...")
         self.driver.get(category_url)
 
-        print(category_xpath[self.website]["product_element"])
         self.waiter.wait(min=2, max=4, webelement_xpath="//" + category_xpath[self.website]["product_element"])
 
         self.mover.check_and_click_coockie()
