@@ -1,0 +1,17 @@
+Summary of Changes in Product Data:
+
+1. Products Modified: 33
+2. Significant Changes:
+   - Price increases were observed in several products, such as Advantix L (25 - 40 kg) 6.0 pip, Milbemax L (5 - 25kg) 4.0 tabl, and Vectra XS (1,5 - 4 kg) 3.0 pip.
+   - Price decreases were seen in products like Vectra XL (40 - 60 kg) 3.0 pip and Seresto L (> 8 kg) 2.0 pack.
+   - Ownership changes were noted for Seresto L (> 8 kg) 2.0 pack, where Medpets became the owner with an increase in competitors.
+3. Patterns:
+   - Prices tended to increase with larger quantity packages, as seen in Milbemax L (5 - 25kg) variations.
+   - Lower weight category products like Vectra XS (1,5 - 4 kg) 3.0 pip showed price decreases.
+   - Changes in ownership were mainly in the Seresto product range.
+4. Notable Price Changes:
+   - Advantix L (25 - 40 kg) 6.0 pip: Price increased from 41.55 to 43.95.
+   - Milbemax L (5 - 25kg) 40.0 tabl: Price increased from 199.95 to 229.95.
+   - Vectra XS (1,5 - 4 kg) 3.0 pip: Price decreased from 19.5 to 18.25.
+
+These changes reflect a mix of price adjustments and ownership shifts, with noticeable impacts on various product categories and package sizes.
